@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class User implements UserDetails {
     @JsonIgnore
     @Column(name = "senha_usuario")
     private String senhaUsuario;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Task> tarefas = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

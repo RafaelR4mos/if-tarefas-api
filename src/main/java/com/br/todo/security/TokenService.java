@@ -29,7 +29,7 @@ public class TokenService {
                     .withClaim("userId", user.getIdUsuario())
                     .withSubject(user.getIdUsuario())
                     .withIssuedAt(generateIssueDate())
-                    .withExpiresAt(generateExpirationDate(120L))
+                    .withExpiresAt(generateExpirationDate(120L)) //2h
                     .sign(algorithm);
 
             return token;
@@ -60,17 +60,8 @@ public class TokenService {
             String token = authorizationHeader.substring(7);
             return JWT.decode(token).getClaim("userId").asString();
         } else {
-            throw new RuntimeException("Erro ao extrair dados de cliente do token");
+            throw new RuntimeException("Erro ao extrair dados do token do usuário");
         }
-    }
-
-    public String extractUserIdClaimViaCookies(String authToken) {
-
-        if(authToken != null) {
-            return JWT.decode(authToken).getClaim("userId").asString();
-        }
-
-        return null;
     }
 
     private Instant generateExpirationDate(Long minutesToExpire) {

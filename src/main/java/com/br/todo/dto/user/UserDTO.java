@@ -16,5 +16,4 @@ public class UserDTO {
 
     @JsonProperty("emailUsuario")
     private String username;
-    private String senhaUsuario;
 }

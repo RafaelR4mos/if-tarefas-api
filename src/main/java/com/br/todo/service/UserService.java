@@ -48,6 +48,11 @@ public class UserService {
 
     }
 
+    public UserDTO findCurrentUserData(String authTokenHeader) {
+        return mapper.map(getLoggedUser(authTokenHeader), UserDTO.class);
+    }
+
+
     private Authentication authenticateUser(String username, String password) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
@@ -60,8 +65,13 @@ public class UserService {
         return new BCryptPasswordEncoder().encode(password);
     }
 
-    private boolean isPasswordMatches(String oldPassword, String newPassword) {
-        return new BCryptPasswordEncoder().matches(newPassword, oldPassword);
+//    private boolean isPasswordMatches(String oldPassword, String newPassword) {
+//        return new BCryptPasswordEncoder().matches(newPassword, oldPassword);
+//    }
+
+    public User getLoggedUser(String authTokenHeader) {
+        String idUsuario = tokenService.extractUserIdClaim(authTokenHeader);
+        return getUsuario(idUsuario);
     }
 
     public User getUsuario(String idUsuario) {
