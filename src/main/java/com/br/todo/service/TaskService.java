@@ -32,6 +32,32 @@ public class TaskService {
                 .toList();
     }
 
+    public List<TaskDTO> findAllByUserAndStatus(String authHeader, String taskStatus) {
+        User user = userService.getLoggedUser(authHeader);
+        List<Task> tasks;
+
+        if(taskStatus.equalsIgnoreCase("F")) {
+            tasks = taskRepository.findAllByUsuarioAndStatus(user, TaskStatus.F);
+        } else if(taskStatus.equalsIgnoreCase("P")) {
+            tasks = taskRepository.findAllByUsuarioAndStatus(user, TaskStatus.P);
+        } else {
+            throw new RegraDeNegocioException("Foi fornecido um valor de status para busca inexistente. Tente novamente com um valor válido.");
+        }
+
+        return tasks.stream()
+                .map(task -> mapper.map(task, TaskDTO.class))
+                .toList();
+    }
+
+    public List<TaskDTO> findAllByUserAndNomeTarefa(String authHeader, String nomeTarefa) {
+        User user = userService.getLoggedUser(authHeader);
+
+        return taskRepository.findAllByUsuarioAndNomeTarefaContainingIgnoreCase(user, nomeTarefa.trim())
+                .stream()
+                .map(task -> mapper.map(task, TaskDTO.class))
+                .toList();
+    }
+
     public TaskDTO create(TaskCreateDTO taskCreateDTO, String authHeader) throws IOException {
         User user = userService.getLoggedUser(authHeader);
 

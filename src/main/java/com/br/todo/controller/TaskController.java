@@ -25,6 +25,22 @@ public class TaskController {
         return new ResponseEntity<>(taskService.findAllByUser(authorization), HttpStatus.OK);
     }
 
+    @GetMapping("/by-status")
+    public ResponseEntity<List<TaskDTO>> findAllTasksByUserAndStatus(
+            @RequestHeader(name = "authorization") String authorization,
+            @RequestParam(name = "status", defaultValue = "P") String status
+    ) {
+        return new ResponseEntity<>(taskService.findAllByUserAndStatus(authorization, status), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-nome")
+    public ResponseEntity<List<TaskDTO>> findAllTasksByUserAndNomeTarefa(
+            @RequestHeader(name = "authorization") String authorization,
+            @RequestParam(name = "nome", defaultValue = "") String nomeTarefa
+    ) {
+        return new ResponseEntity<>(taskService.findAllByUserAndNomeTarefa(authorization, nomeTarefa), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<TaskDTO> createTask(
             @Valid @RequestBody TaskCreateDTO taskCreateDTO,
