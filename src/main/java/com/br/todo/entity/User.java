@@ -36,7 +36,7 @@ public class User implements UserDetails {
     @Column(name = "senha_usuario")
     private String senhaUsuario;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Task> tarefas = new ArrayList<>();
 
     @Override

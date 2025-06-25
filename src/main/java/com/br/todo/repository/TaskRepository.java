@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
-    public List<Task> findAllByUsuario(User usuario);
+    List<Task> findAllByUsuario(User usuario);
 }

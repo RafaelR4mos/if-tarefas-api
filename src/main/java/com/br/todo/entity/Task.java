@@ -1,6 +1,7 @@
 package com.br.todo.entity;
 
 import com.br.todo.entity.enumeration.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +38,12 @@ public class Task {
     @CreationTimestamp
     private Timestamp dtCriacao;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     private User usuario;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "tarefa", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    private Image imagem;
 }
