@@ -3,7 +3,7 @@ package com.br.todo.service;
 import com.br.todo.dto.auth.LoginRequestDTO;
 import com.br.todo.dto.user.UserDTO;
 import com.br.todo.entity.User;
-import com.br.todo.entity.UserCreateDTO;
+import com.br.todo.dto.user.UserCreateDTO;
 import com.br.todo.exception.RegraDeNegocioException;
 import com.br.todo.exception.ResourceNotFoundException;
 import com.br.todo.repository.UserRepository;
@@ -27,6 +27,7 @@ public class UserService {
     private final TokenService tokenService;
 
     public UserDTO create(UserCreateDTO usuarioCreateDTO) {
+        validateUserEmailAlreadyExists(usuarioCreateDTO.getEmailUsuario());
         String encryptedPassword = encryptPassword(usuarioCreateDTO.getSenhaUsuario());
 
         User usuario = User.builder()
@@ -78,5 +79,11 @@ public class UserService {
         return userRepository.findById(idUsuario)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Nenhum usuário com id " + idUsuario + " encontrado."));
+    }
+
+    private void validateUserEmailAlreadyExists(String email) {
+        if (userRepository.existsByUsername(email)) {
+            throw  new RegraDeNegocioException("Não é possível criar uma conta com este email");
+        }
     }
 }

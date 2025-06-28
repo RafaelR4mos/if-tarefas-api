@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -156,5 +157,13 @@ public class ExceptionResponseHandler {
         ErrorHandlerResponse errorResponse = ErrorHandlerResponse.builder().status(HttpStatus.UNAUTHORIZED.value())
                 .error("UNAUTHORIZED").message("Email ou senha incorreto(s). Verifique suas credenciais e tente novamente.").timestamp(System.currentTimeMillis()).build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorHandlerResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        log.error("DataIntegrityViolationException occurred: {}", ex.getMessage());
+        ErrorHandlerResponse errorResponse = ErrorHandlerResponse.builder().status(HttpStatus.BAD_REQUEST.value())
+                .error("DATA_INTEGRITY_VIOLATION").message(ex.getMessage()).timestamp(System.currentTimeMillis()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }

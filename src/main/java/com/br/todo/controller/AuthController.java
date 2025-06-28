@@ -3,7 +3,7 @@ package com.br.todo.controller;
 import com.br.todo.dto.auth.LoginRequestDTO;
 import com.br.todo.dto.auth.LoginResponseDTO;
 import com.br.todo.dto.user.UserDTO;
-import com.br.todo.entity.UserCreateDTO;
+import com.br.todo.dto.user.UserCreateDTO;
 import com.br.todo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
